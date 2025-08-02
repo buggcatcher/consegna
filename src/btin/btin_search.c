@@ -38,7 +38,7 @@ int	is_child_builtin(char *cmd)
 
 int	should_execute_in_parent(t_node *node)
 {
-	if (!node->argv || !node->argv[0])
+	if (!node->argv || !node->argv[0] || node->argv[0][0] == '\0')
 		return (1);
 	return (is_parent_builtin(node->argv[0]) && !node->next);
 }

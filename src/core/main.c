@@ -49,7 +49,7 @@ static bool	parse(char *input, t_shell_state *state, t_token **token, \
 		return (false);
 	}
 	*node = ft_node(*token);
-	if (preprocess_heredocs(*node, state) != 0)
+	if (preprocess_hdocs(*node, state) != 0)
 	{
 		ft_free_token(*token);
 		ft_free_nodes(*node);
@@ -70,7 +70,7 @@ static bool	process_input(char *input, t_shell_state *state)
 	ignore_signals();
 	executor_loop(node, state, token);
 	setup_signals();
-	close_all_heredoc_fds(node);
+	close_all_hdoc_fds(node);
 	ft_free_nodes(node);
 	ft_free_token(token);
 	return (true);

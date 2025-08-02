@@ -16,18 +16,24 @@
 # include "types.h"
 
 /* Heredoc processing functions */
-int		handle_heredoc_sequence(t_redir *start_redir, t_shell_state *state);
-int		read_heredoc_input( \
+int		handle_hdoc_sequence(t_redir *start_redir, t_shell_state *state);
+int		read_hdoc_input( \
 		char *delimiter, t_heredoc_buffer *buffer, t_shell_state *state);
-int		preprocess_heredocs(t_node *nodes, t_shell_state *state);
+int		preprocess_hdocs(t_node *nodes, t_shell_state *state);
 int		append_to_buffer(t_heredoc_buffer *buffer, const char *line);
-char	*expand_heredoc_line(char *line, t_shell_state *state);
-void	free_heredoc_buffer(t_heredoc_buffer *buffer);
-int		handle_heredoc_redirection(t_redir *redir);
+char	*expand_hdoc_line(char *line, t_shell_state *state);
+void	free_hdoc_buffer(t_heredoc_buffer *buffer);
+int		handle_hdoc_redirection(t_redir *redir);
 int		create_fd_from_buffer(t_heredoc_buffer *buffer);
-int		fill_heredoc_buffer( \
+int		fill_hdoc_buffer( \
 		t_redir *start, t_heredoc_buffer *buffer, t_shell_state *state);
 void	mark_as_skipped(t_redir *start);
+
+/* Heredoc processor functions */
+int		is_hdoc_delimiter(char *line, char *delimiter, size_t delimiter_len);
+int		expand_and_append(char *line, t_heredoc_buffer *buffer, \
+		t_shell_state *state);
+int		process_hdoc_line(char *line, char *delimiter, size_t delimiter_len);
 
 /* Legacy heredoc functions */
 int		ft_handle_heredoc(t_redir *redirs);

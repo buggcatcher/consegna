@@ -81,7 +81,7 @@ void	ft_free_redirs(t_redir *redir)
 		next_redir = redir->next;
 		free(redir->filename);
 		if (redir->heredoc_buffer)
-			free_heredoc_buffer(redir->heredoc_buffer);
+			free_hdoc_buffer(redir->heredoc_buffer);
 		free(redir);
 		redir = next_redir;
 	}

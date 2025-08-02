@@ -15,8 +15,10 @@
 
 /* Signal handling functions */
 void	handle_sigint(int sig);
+void	handle_hdoc_sigint(int sig);
 void	setup_signals(void);
-void	disable_signals(void);
+void	setup_hdoc_signals(void);
+void	restore_default_signals(void);
 void	ignore_signals(void);
 
 #endif

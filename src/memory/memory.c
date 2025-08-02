@@ -46,3 +46,21 @@ void	*safe_alloc(size_t n_elem, size_t bytes, char *description)
 	}
 	return (ptr);
 }
+
+void	free_env_list(t_env *env)
+{
+	t_env	*current;
+	t_env	*next;
+
+	current = env;
+	while (current)
+	{
+		next = current->next;
+		if (current->key)
+			free(current->key);
+		if (current->value)
+			free(current->value);
+		free(current);
+		current = next;
+	}
+}

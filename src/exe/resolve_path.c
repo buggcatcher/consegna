@@ -27,7 +27,7 @@ static bool	is_absolute_path(char *cmd)
 	return (ft_strchr(cmd, '/') != NULL);
 }
 
-static int	has_heredoc_before_redirect_out(t_redir *redir_list)
+static int	has_hdoc_before_redirect_out(t_redir *redir_list)
 {
 	t_redir	*current;
 
@@ -63,9 +63,9 @@ char	*resolve_path(char *cmd, t_env *env, t_node *node, t_node *head)
 		return (NULL);
 	full_path = search_in_paths(paths, cmd);
 	free_split_all(paths);
-	if (!full_path && !has_heredoc_before_redirect_out(node->redirs))
+	if (!full_path && !has_hdoc_before_redirect_out(node->redirs))
 	{
-		close_all_heredoc_fds(head);
+		close_all_hdoc_fds(head);
 		ft_free_cmd_not_found(env, head);
 		write(2, "command not found\n", 19);
 		exit(127);

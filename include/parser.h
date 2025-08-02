@@ -76,5 +76,6 @@ void	ft_free_token(t_token *token);
 void	ft_free_argv(char **argv);
 void	ft_free_redirs(t_redir *redir);
 char	**free_argv(char **argv, int i);
+void	free_env_list(t_env *env);
 
 #endif

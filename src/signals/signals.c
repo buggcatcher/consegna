@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+/* * *
+ * Gestisce il segnale SIGINT (Ctrl+C) durante l'input da readline.
+ * Imposta la variabile globale g_sigint, stampa una nuova riga,
+ * pulisce la riga corrente e mostra un nuovo prompt.
+ */
 void	handle_sigint(int sig)
 {
 	(void)sig;
@@ -22,6 +27,11 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
+/* * *
+ * Configura i gestori dei segnali per la shell interattiva.
+ * Imposta handle_sigint come gestore per SIGINT (Ctrl+C) e
+ * ignora il segnale SIGQUIT (Ctrl+\) per evitare l'uscita indesiderata.
+ */
 void	setup_signals(void)
 {
 	struct sigaction	sa;
@@ -36,7 +46,12 @@ void	setup_signals(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
-void	disable_signals(void)
+/**
+ * Ripristina i gestori di segnali al comportamento predefinito del sistema.
+ * Utilizzata tipicamente prima di eseguire comandi esterni per assicurarsi
+ * che abbiano il normale comportamento dei segnali.
+ */
+void	restore_default_signals(void)
 {
 	struct sigaction	sa;
 
@@ -47,6 +62,11 @@ void	disable_signals(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
+/**
+ * Configura i segnali SIGINT e SIGQUIT per essere completamente ignorati.
+ * Utilizzata durante l'esecuzione di comandi che non dovrebbero essere
+ * interrotti da questi segnali.
+ */
 void	ignore_signals(void)
 {
 	struct sigaction	sa;
@@ -58,20 +78,31 @@ void	ignore_signals(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
-void	free_env_list(t_env *env)
+/**
+ * Signal handler specifico per heredoc.
+ * Non usa readline functions, solo imposta g_sigint.
+ */
+void	handle_hdoc_sigint(int sig)
 {
-	t_env	*current;
-	t_env	*next;
-
-	current = env;
-	while (current)
-	{
-		next = current->next;
-		if (current->key)
-			free(current->key);
-		if (current->value)
-			free(current->value);
-		free(current);
-		current = next;
-	}
+	(void)sig;
+	g_sigint = 1;
+	write(1, "\n", 1);
 }
+
+/**
+ * Setup segnali specifico per heredoc (senza readline).
+ */
+void	setup_hdoc_signals(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = handle_hdoc_sigint;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = 0;
+	sigaction(SIGQUIT, &sa, NULL);
+}
+

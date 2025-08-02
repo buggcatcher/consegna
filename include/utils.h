@@ -49,6 +49,9 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 /* Path utilities */
 char	*join_path(char *dir, char *cmd);
 
+/* Get Next Line */
+char	*gtnxl(int fd);
+
 /* Numeric utilities */
 int		is_numeric(const char *str);
 long	ft_strtol(const char *str, char **endptr);
@@ -59,6 +62,6 @@ void	ft_putstr_stderr(char *s);
 
 /* Cleanup utilities */
 void	clean_exit(t_node *node, t_env *env, int status, t_token *token_head);
-void	close_all_heredoc_fds(t_node *head);
+void	close_all_hdoc_fds(t_node *head);
 
 #endif

@@ -21,11 +21,12 @@ EXE_SRCS = $(SRCDIR)/exe/redirects.c $(SRCDIR)/exe/resolve_path.c \
 		   $(SRCDIR)/exe/fd.c $(SRCDIR)/exe/path.c $(SRCDIR)/exe/parent_exe.c 
 
 HDOC_SRCS = $(SRCDIR)/hdoc/heredoc_buffer.c $(SRCDIR)/hdoc/heredoc_preprocessor.c \
-			$(SRCDIR)/hdoc/read_heredoc.c
+			$(SRCDIR)/hdoc/read_heredoc.c $(SRCDIR)/hdoc/heredoc_processor.c
 
 LIBFX_SRCS = $(SRCDIR)/libfx/libfx.c $(SRCDIR)/libfx/utils.c \
 			 $(SRCDIR)/libfx/utils_mini.c $(SRCDIR)/libfx/itoa_mini.c \
-			 $(SRCDIR)/libfx/split.c $(SRCDIR)/libfx/libfx_mini.c
+			 $(SRCDIR)/libfx/split.c $(SRCDIR)/libfx/libfx_mini.c \
+			 $(SRCDIR)/libfx/gtnxl.c
 
 MEMORY_SRCS = $(SRCDIR)/memory/memory.c $(SRCDIR)/memory/free_mini.c \
 			  $(SRCDIR)/memory/free.c

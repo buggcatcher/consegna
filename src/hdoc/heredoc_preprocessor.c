@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	preprocess_heredocs(t_node *node, t_shell_state *state)
+int	preprocess_hdocs(t_node *node, t_shell_state *state)
 {
 	t_node	*current;
 	t_redir	*redir;
@@ -25,7 +25,7 @@ int	preprocess_heredocs(t_node *node, t_shell_state *state)
 		{
 			if (redir->type == TK_HEREDOC_5 && redir->fd == -1)
 			{
-				if (handle_heredoc_sequence(redir, state) != 0)
+				if (handle_hdoc_sequence(redir, state) != 0)
 					return (1);
 			}
 			redir = redir->next;
@@ -35,7 +35,7 @@ int	preprocess_heredocs(t_node *node, t_shell_state *state)
 	return (0);
 }
 
-int	fill_heredoc_buffer(t_redir *start, t_heredoc_buffer *buffer, \
+int	fill_hdoc_buffer(t_redir *start, t_heredoc_buffer *buffer, \
 						t_shell_state *state)
 {
 	t_redir	*current;
@@ -48,7 +48,7 @@ int	fill_heredoc_buffer(t_redir *start, t_heredoc_buffer *buffer, \
 		{
 			buffer->content[0] = '\0';
 		}
-		if (read_heredoc_input(current->filename, buffer, state) != 0)
+		if (read_hdoc_input(current->filename, buffer, state) != 0)
 			return (1);
 		current = current->next;
 	}

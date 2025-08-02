@@ -12,71 +12,84 @@
 
 #include "minishell.h"
 
-char	*expand_heredoc_line(char *line, t_shell_state *state)
+static void	handle_hdoc_cleanup(void)
 {
-	char	*input_ptr;
-	char	*result;
-
-	if (!line || !state)
-		return (NULL);
-	input_ptr = line;
-	result = NULL;
-	while (*input_ptr)
-	{
-		result = ft_create_var(result, &input_ptr, state);
-		if (!result)
-			return (NULL);
-	}
-	return (result);
+	gtnxl(-1);
+	setup_signals();
 }
 
-static int	is_heredoc_delimiter(char *line, char *delimiter, \
-								size_t delimiter_len)
+static void	handle_hdoc_eof(char *delimiter)
 {
-	return (ft_strlen(line) == delimiter_len && \
-			ft_strncmp(line, delimiter, delimiter_len) == 0);
+	ft_putstr_stderr("\nminishell: warning: here-document delimited by end-of-file (wanted `");
+	ft_putstr_stderr(delimiter);
+	ft_putstr_stderr("')\n");
+	handle_hdoc_cleanup();
 }
 
-static int	expand_and_append(char *line, t_heredoc_buffer *buffer, \
-							t_shell_state *state)
+static int	check_signals_and_cleanup(char *line)
 {
-	char	*expanded_line;
-
-	expanded_line = expand_heredoc_line(line, state);
-	if (!expanded_line)
-		return (1);
-	if (append_to_buffer(buffer, expanded_line) != 0)
+	if (g_sigint)
 	{
-		free(expanded_line);
-		return (1);
+		if (line)
+			free(line);
+		handle_hdoc_cleanup();
+		return (130);
 	}
-	free(expanded_line);
 	return (0);
 }
 
-int	read_heredoc_input(char *delimiter, t_heredoc_buffer *buffer, \
-						t_shell_state *state)
+static int	handle_read_line(char *line, char *delimiter, size_t delimiter_len,
+								t_heredoc_buffer *buffer, t_shell_state *state)
 {
-	char	*line;
-	size_t	delimiter_len;
+	int	process_result;
 
-	delimiter_len = ft_strlen(delimiter);
-	while (1)
+	if (!line)
 	{
-		line = readline("> ");
-		if (!line)
-			break ;
-		if (is_heredoc_delimiter(line, delimiter, delimiter_len))
-		{
-			free(line);
-			break ;
-		}
-		if (expand_and_append(line, buffer, state) != 0)
-		{
-			free(line);
-			return (1);
-		}
+		handle_hdoc_eof(delimiter);
+		return (1);
+	}
+	process_result = process_hdoc_line(line, delimiter, delimiter_len);
+	if (process_result == 1)
+	{
 		free(line);
+		handle_hdoc_cleanup();
+		return (1);
 	}
-	return (0);
+	if (expand_and_append(line, buffer, state) != 0)
+	{
+		free(line);
+		handle_hdoc_cleanup();
+		return (-1);
+	}
+	return (free(line), 0);
+}
+
+int read_hdoc_input(char *delimiter, t_heredoc_buffer *buffer, 
+                      t_shell_state *state)
+{
+    char *line;
+    size_t delimiter_len;
+    int signal_result;
+    int line_result;
+
+    delimiter_len = ft_strlen(delimiter);
+    setup_hdoc_signals();
+    while (1)
+    {
+        signal_result = check_signals_and_cleanup(NULL);
+        if (signal_result != 0)
+            return (signal_result);
+        write(1, "> ", 2);
+        line = gtnxl(STDIN_FILENO);
+        signal_result = check_signals_and_cleanup(line);
+        if (signal_result != 0)
+            return (signal_result);
+        line_result = handle_read_line(line, delimiter, delimiter_len, buffer, state);
+        if (line_result == 1)
+            break;
+        if (line_result == -1)
+            return (1);
+    }
+    handle_hdoc_cleanup();
+    return (0);
 }

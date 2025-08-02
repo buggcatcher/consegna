@@ -89,7 +89,7 @@ int	create_fd_from_buffer(t_heredoc_buffer *buffer)
 	return (pipefd[0]);
 }
 
-int	handle_heredoc_sequence(t_redir *start_redir, t_shell_state *state)
+int	handle_hdoc_sequence(t_redir *start_redir, t_shell_state *state)
 {
 	t_heredoc_buffer	*buffer;
 	int					fd;
@@ -97,19 +97,19 @@ int	handle_heredoc_sequence(t_redir *start_redir, t_shell_state *state)
 	buffer = create_heredoc_buffer();
 	if (!buffer)
 		return (1);
-	if (fill_heredoc_buffer(start_redir, buffer, state) != 0)
+	if (fill_hdoc_buffer(start_redir, buffer, state) != 0)
 	{
-		free_heredoc_buffer(buffer);
+		free_hdoc_buffer(buffer);
 		return (1);
 	}
 	fd = create_fd_from_buffer(buffer);
 	if (fd < 0)
 	{
-		free_heredoc_buffer(buffer);
+		free_hdoc_buffer(buffer);
 		return (1);
 	}
 	start_redir->fd = fd;
 	mark_as_skipped(start_redir->next);
-	free_heredoc_buffer(buffer);
+	free_hdoc_buffer(buffer);
 	return (0);
 }

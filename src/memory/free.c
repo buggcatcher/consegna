@@ -35,7 +35,7 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-void	free_heredoc_buffer(t_heredoc_buffer *buffer)
+void	free_hdoc_buffer(t_heredoc_buffer *buffer)
 {
 	if (!buffer)
 		return ;
@@ -44,7 +44,7 @@ void	free_heredoc_buffer(t_heredoc_buffer *buffer)
 	free(buffer);
 }
 
-void	close_all_heredoc_fds(t_node *head)
+void	close_all_hdoc_fds(t_node *head)
 {
 	t_node	*cur;
 	t_redir	*redir;

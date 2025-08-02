@@ -88,12 +88,12 @@ static void	execute_command(t_node *node, t_env *env, t_node *head, \
 void	exec_child(t_node *node, int pipe_out[2], int pipe_in, \
 					t_child_context *ctx)
 {
-	disable_signals();
+	restore_default_signals();
 	if (node->next)
 		switch_fd(pipe_out[1], STDOUT_FILENO);
 	handle_pipes(pipe_in, pipe_out);
 	handle_redirections(node, ctx->env, ctx->head, ctx->token_head);
-	if (!node->argv || !node->argv[0])
+	if (!node->argv || !node->argv[0] || node->argv[0][0] == '\0')
 	{
 		ft_free_token(ctx->token_head);
 		ft_free_nodes(node);
