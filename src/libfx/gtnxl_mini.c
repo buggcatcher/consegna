@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-// Funzione ausiliaria per pulire il buffer
 void	clean_buffer(char **buffer)
 {
 	if (*buffer)
@@ -11,7 +9,12 @@ void	clean_buffer(char **buffer)
 	}
 }
 
-// Funzione ausiliaria per gestire EOF o errore nella lettura
+void	handle_hdoc_cleanup(void)
+{
+	gtnxl(-1);
+	setup_signals();
+}
+
 char	*handle_eof(char **lbuffer, int *flag)
 {
 	char	*line;

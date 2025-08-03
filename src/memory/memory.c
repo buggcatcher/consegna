@@ -64,9 +64,3 @@ void	free_env_list(t_env *env)
 		current = next;
 	}
 }
-
-void	handle_hdoc_cleanup(void)
-{
-	gtnxl(-1);
-	setup_signals();
-}

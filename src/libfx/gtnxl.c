@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-// Legge dal file descriptor e restituisce il contenuto letto
 static char	*fd_reader(int fd, int *flag)
 {
 	int		char_read;
@@ -37,7 +36,6 @@ static char	*fd_reader(int fd, int *flag)
 	return (buffer);
 }
 
-// Funzione ausiliaria per aggiornare il buffer dopo l'estrazione di una linea
 static char	*update_buffer_after_extraction(char **lbuffer, int newline_pos)
 {
 	char	*char_left;
@@ -53,7 +51,6 @@ static char	*update_buffer_after_extraction(char **lbuffer, int newline_pos)
 	return (char_left);
 }
 
-// Estrae una linea completa dal buffer fino al primo \n
 static char	*extract_from_buffer(char **lbuffer)
 {
 	char	*line;
@@ -79,7 +76,6 @@ static char	*extract_from_buffer(char **lbuffer)
 	return (NULL);
 }
 
-// Legge e assembla il contenuto fino a trovare una linea completa
 static char	*read_and_assemble(char **lbuffer, int fd, int *flag)
 {
 	char	*read_line;
@@ -106,7 +102,6 @@ static char	*read_and_assemble(char **lbuffer, int fd, int *flag)
 	}
 }
 
-// Funzione principale di get_next_line
 char	*gtnxl(int fd)
 {
 	static char	*buffer;
