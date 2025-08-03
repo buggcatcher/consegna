@@ -19,14 +19,12 @@ char	*expand_hdoc_line(char *line, t_shell_state *state)
 
 	if (!line || !state)
 		return (NULL);
-	
-	// Se la linea è vuota, restituisci una stringa vuota
 	if (*line == '\0')
 		return (ft_strdup(""));
 		
 	input_ptr = line;
 	result = NULL;
-	while (*input_ptr)
+	while (*input_ptr)	
 	{
 		result = ft_create_var(result, &input_ptr, state);
 		if (!result)
@@ -58,8 +56,6 @@ int	expand_and_append(char *line, t_heredoc_buffer *buffer, \
 	return (0);
 }
 
-// Processa una riga dell'heredoc
-// Ritorna: 0 = continua, 1 = delimiter trovato (termina)
 int	process_hdoc_line(char *line, char *delimiter, size_t delimiter_len)
 {
 	size_t	line_len;

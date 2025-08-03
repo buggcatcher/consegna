@@ -12,12 +12,6 @@
 
 #include "minishell.h"
 
-static void	handle_hdoc_cleanup(void)
-{
-	gtnxl(-1);
-	setup_signals();
-}
-
 static void	handle_hdoc_eof(char *delimiter)
 {
 	ft_putstr_stderr("\nminishell: warning: here-document delimited by end-of-file (wanted `");
@@ -64,32 +58,41 @@ static int	handle_read_line(char *line, char *delimiter, size_t delimiter_len,
 	return (free(line), 0);
 }
 
+static int	hdoc_read_loop(char *delimiter, size_t delimiter_len,
+							t_heredoc_buffer *buffer, t_shell_state *state)
+{
+	char	*line;
+	int		signal_result;
+	int		line_result;
+
+	while (1)
+	{
+		signal_result = check_signals_and_cleanup(NULL);
+		if (signal_result != 0)
+			return (signal_result);
+		write(1, "> ", 2);
+		line = gtnxl(STDIN_FILENO);
+		signal_result = check_signals_and_cleanup(line);
+		if (signal_result != 0)
+			return (signal_result);
+		line_result = handle_read_line(line, delimiter, delimiter_len, buffer, state);
+		if (line_result == 1)
+			break;
+		if (line_result == -1)
+			return (1);
+	}
+	return (0);
+}
+
 int read_hdoc_input(char *delimiter, t_heredoc_buffer *buffer, 
                       t_shell_state *state)
 {
-    char *line;
-    size_t delimiter_len;
-    int signal_result;
-    int line_result;
+	size_t	delimiter_len;
+	int		result;
 
-    delimiter_len = ft_strlen(delimiter);
-    setup_hdoc_signals();
-    while (1)
-    {
-        signal_result = check_signals_and_cleanup(NULL);
-        if (signal_result != 0)
-            return (signal_result);
-        write(1, "> ", 2);
-        line = gtnxl(STDIN_FILENO);
-        signal_result = check_signals_and_cleanup(line);
-        if (signal_result != 0)
-            return (signal_result);
-        line_result = handle_read_line(line, delimiter, delimiter_len, buffer, state);
-        if (line_result == 1)
-            break;
-        if (line_result == -1)
-            return (1);
-    }
-    handle_hdoc_cleanup();
-    return (0);
+	delimiter_len = ft_strlen(delimiter);
+	setup_hdoc_signals();
+	result = hdoc_read_loop(delimiter, delimiter_len, buffer, state);
+	handle_hdoc_cleanup();
+	return (result);
 }
