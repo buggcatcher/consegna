@@ -12,10 +12,6 @@
 
 #include "minishell.h"
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1024
-#endif
-
 // Legge dal file descriptor e restituisce il contenuto letto
 static char	*fd_reader(int fd, int *flag)
 {
@@ -41,11 +37,26 @@ static char	*fd_reader(int fd, int *flag)
 	return (buffer);
 }
 
+// Funzione ausiliaria per aggiornare il buffer dopo l'estrazione di una linea
+static char	*update_buffer_after_extraction(char **lbuffer, int newline_pos)
+{
+	char	*char_left;
+
+	if ((*lbuffer)[newline_pos + 1] != '\0')
+		char_left = ft_strdup((*lbuffer) + newline_pos + 1);
+	else
+		char_left = ft_strdup("");
+	if (!char_left)
+		return (NULL);
+	free(*lbuffer);
+	*lbuffer = char_left;
+	return (char_left);
+}
+
 // Estrae una linea completa dal buffer fino al primo \n
-char	*extract_from_buffer(char **lbuffer)
+static char	*extract_from_buffer(char **lbuffer)
 {
 	char	*line;
-	char	*char_left;
 	int		x;
 
 	x = 0;
@@ -58,24 +69,18 @@ char	*extract_from_buffer(char **lbuffer)
 		line = ft_strndup(*lbuffer, x + 1);
 		if (!line)
 			return (NULL);
-		if ((*lbuffer)[x + 1] != '\0')
-			char_left = ft_strdup((*lbuffer) + x + 1);
-		else
-			char_left = ft_strdup("");
-		if (!char_left)
+		if (!update_buffer_after_extraction(lbuffer, x))
 		{
 			free(line);
 			return (NULL);
 		}
-		free(*lbuffer);
-		*lbuffer = char_left;
 		return (line);
 	}
 	return (NULL);
 }
 
 // Legge e assembla il contenuto fino a trovare una linea completa
-char	*read_and_assemble(char **lbuffer, int fd, int *flag)
+static char	*read_and_assemble(char **lbuffer, int fd, int *flag)
 {
 	char	*read_line;
 	char	*tmp;
@@ -88,19 +93,7 @@ char	*read_and_assemble(char **lbuffer, int fd, int *flag)
 			return (line);
 		read_line = fd_reader(fd, flag);
 		if (!read_line)
-		{
-			if (*flag == 1)
-				return (NULL);
-			// EOF raggiunto - restituisci ciò che rimane nel buffer
-			if (*lbuffer && **lbuffer)
-			{
-				line = ft_strdup(*lbuffer);
-				free(*lbuffer);
-				*lbuffer = NULL;
-				return (line);
-			}
-			return (NULL);
-		}
+			return (handle_eof(lbuffer, flag));
 		tmp = ft_strjoin(*lbuffer, read_line);
 		free(*lbuffer);
 		free(read_line);
@@ -122,14 +115,7 @@ char	*gtnxl(int fd)
 
 	flag = 0;
 	if (fd == -1)
-	{
-		if (buffer)
-		{
-			free(buffer);
-			buffer = NULL;
-		}
-		return (NULL);
-	}
+		return (clean_buffer(&buffer), NULL);
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!buffer)
@@ -137,17 +123,7 @@ char	*gtnxl(int fd)
 	if (!buffer)
 		return (NULL);
 	result = read_and_assemble(&buffer, fd, &flag);
-	if (flag)
-	{
-		free(buffer);
-		buffer = NULL;
-		return (NULL);
-	}
-	// Se EOF e nessun risultato, pulisci il buffer
-	if (!result && buffer)
-	{
-		free(buffer);
-		buffer = NULL;
-	}
+	if (flag || (!result && buffer))
+		return (clean_buffer(&buffer), NULL);
 	return (result);
 }

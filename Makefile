@@ -26,7 +26,7 @@ HDOC_SRCS = $(SRCDIR)/hdoc/heredoc_buffer.c $(SRCDIR)/hdoc/heredoc_preprocessor.
 LIBFX_SRCS = $(SRCDIR)/libfx/libfx.c $(SRCDIR)/libfx/utils.c \
 			 $(SRCDIR)/libfx/utils_mini.c $(SRCDIR)/libfx/itoa_mini.c \
 			 $(SRCDIR)/libfx/split.c $(SRCDIR)/libfx/libfx_mini.c \
-			 $(SRCDIR)/libfx/gtnxl.c
+			 $(SRCDIR)/libfx/gtnxl.c $(SRCDIR)/libfx/gtnxl_mini.c
 
 MEMORY_SRCS = $(SRCDIR)/memory/memory.c $(SRCDIR)/memory/free_mini.c \
 			  $(SRCDIR)/memory/free.c

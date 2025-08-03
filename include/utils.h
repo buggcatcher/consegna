@@ -16,6 +16,11 @@
 # include <stddef.h>
 # include "types.h"
 
+/* Constants */
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 1024
+#endif
+
 /* String utilities */
 char	*ft_strchr(char *s, int c);
 char	*ft_strjoin_m(char *s1, char *s2);
@@ -51,6 +56,10 @@ char	*join_path(char *dir, char *cmd);
 
 /* Get Next Line */
 char	*gtnxl(int fd);
+
+/* Get Next Line auxiliary functions */
+char	*handle_eof(char **lbuffer, int *flag);
+void	clean_buffer(char **buffer);
 
 /* Numeric utilities */
 int		is_numeric(const char *str);
