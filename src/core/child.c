@@ -24,14 +24,15 @@ static void	handle_redirections(t_node *node, t_env *env, t_node *head, \
 	}
 }
 
-static void	handle_builtin(t_node *node, t_env **env, t_token *token_head)
+static void	handle_builtin(t_node *node, t_env **env, t_token *token_head, \
+						t_node *head)
 {
 	int	status;
 
 	if (is_builtin(node->argv[0]))
 	{
 		status = exec_builtin(node->argv, env);
-		clean_exit(node, *env, status, token_head);
+		clean_exit(head, *env, status, token_head);
 	}
 }
 
@@ -100,6 +101,6 @@ void	exec_child(t_node *node, int pipe_out[2], int pipe_in, \
 		ft_free_env(ctx->env);
 		exit(0);
 	}
-	handle_builtin(node, &ctx->env, ctx->token_head);
+	handle_builtin(node, &ctx->env, ctx->token_head, ctx->head);
 	execute_command(node, ctx->env, ctx->head, ctx->token_head);
 }

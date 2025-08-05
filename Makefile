@@ -3,7 +3,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -Iinclude
 SRCDIR = src
 
-VPATH = $(SRCDIR)/btin:$(SRCDIR)/core:$(SRCDIR)/debug:$(SRCDIR)/env:$(SRCDIR)/exe:$(SRCDIR)/hdoc:$(SRCDIR)/libfx:$(SRCDIR)/memory:$(SRCDIR)/parse:$(SRCDIR)/signals
+VPATH = .:$(SRCDIR)/btin:$(SRCDIR)/core:$(SRCDIR)/debug:$(SRCDIR)/env:$(SRCDIR)/exe:$(SRCDIR)/hdoc:$(SRCDIR)/libfx:$(SRCDIR)/memory:$(SRCDIR)/parse:$(SRCDIR)/signals
 
 all: $(NAME)
 
@@ -14,6 +14,8 @@ BTIN_SRCS = $(SRCDIR)/btin/btin_apply.c $(SRCDIR)/btin/btin_search.c \
 
 CORE_SRCS = $(SRCDIR)/core/main.c $(SRCDIR)/core/executor_loop.c \
 			$(SRCDIR)/core/child.c
+
+DEBUG_SRCS = debug.c
 
 ENV_SRCS = $(SRCDIR)/env/env.c $(SRCDIR)/env/system_env.c $(SRCDIR)/env/various.c
 

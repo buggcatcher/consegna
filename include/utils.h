@@ -16,11 +16,6 @@
 # include <stddef.h>
 # include "types.h"
 
-/* Constants */
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1024
-#endif
-
 /* String utilities */
 char	*ft_strchr(char *s, int c);
 char	*ft_strjoin_m(char *s1, char *s2);

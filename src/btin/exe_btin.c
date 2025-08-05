@@ -23,7 +23,7 @@ int	exe_pwd(char **args, t_env **env)
 		printf("%s\n", cwd);
 		return (0);
 	}
-	write(2, "pwd\n", 5);
+	write(2, "pwd\n", 4);
 	return (1);
 }
 

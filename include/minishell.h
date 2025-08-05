@@ -42,8 +42,20 @@
 
 /* Constants */
 # define PATH_MAX 4096
+# define BUFFER_SIZE 1024
 
 /* Global variables */
 extern volatile sig_atomic_t	g_sigint;
+
+/* Debug functions */
+void	debug_status(int status);
+void	debug_pipe_test(t_node *node);
+void	debug_redirect_info(t_redir *redir);
+void	debug_print_nodes(t_node *node);
+void	debug_print_pipeline(t_node *head);
+void	debug_print_env(t_env *env);
+void	debug_print_array(char **arr);
+void	debug_execve_args(char *path, char **argv, char **env);
+void	debug_path_resolution(char *cmd, t_env *env);
 
 #endif

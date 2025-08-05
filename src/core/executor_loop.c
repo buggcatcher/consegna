@@ -65,7 +65,7 @@ int	wait_for_last(pid_t last_pid, int *exit_status)
 	while (1)
 	{
 		pid = wait(&status);
-		if (pid == -1)
+		if (pid == -1)	
 			break ;
 		if (pid == 0)
 			continue ;
@@ -85,6 +85,31 @@ int	wait_for_last(pid_t last_pid, int *exit_status)
 	return (*exit_status);
 }
 
+static void	wait_for_previous_children(pid_t last_pid)
+{
+	int		status;
+	pid_t	pid;
+
+	if (last_pid == -1)
+	{
+		printf("[debug]: no previous children to wait for\n");
+		return ;
+	}
+	printf("[debug]: waiting for previous children, last_pid: %d\n", last_pid);
+	while (1)
+	{
+		pid = waitpid(-1, &status, 0);
+		if (pid == -1)
+		{
+			printf("[debug]: no more children to wait for\n");
+			break ;
+		}
+		if (pid == 0)
+			continue ;
+		printf("[debug]: waited for child pid: %d\n", pid);
+	}
+}
+
 static int	handle_fork_and_child(t_executor_context *ctx)
 {
 	pid_t			pid;
@@ -92,7 +117,7 @@ static int	handle_fork_and_child(t_executor_context *ctx)
 
 	pid = fork();
 	if (pid == -1)
-		return (write(2, "error: Fork\n", 6), 1);
+		return (write(2, "error: Fork\n", 13), 1);
 	if (pid == 0)
 	{
 		child_ctx.env = ctx->state->env;
@@ -121,11 +146,16 @@ int	executor_loop(t_node *node, t_shell_state *state, t_token *token_head)
 		if (create_pipe_if_needed(node, pipe_fd))
 			return (1);
 		if (should_execute_in_parent(node))
+		{
+			wait_for_previous_children(last_pid);
+			printf("[debug]: executing parent\n");
 			return (execute_in_parent_and_close(node, state, pipe_fd, prev_fd));
+		}
 		ctx = (t_executor_context){node, head, state, token_head, pipe_fd, \
 									prev_fd, &last_pid};
 		if (handle_fork_and_child(&ctx))
 			return (1);
+		printf("[debug]: executed child\n");
 		update_fds_for_next_cmd(node, pipe_fd, &prev_fd);
 		node = node->next;
 	}

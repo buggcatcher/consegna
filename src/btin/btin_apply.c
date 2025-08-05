@@ -18,16 +18,19 @@ char	*join_key_value(char *key, char *value)
 	size_t	val_len;
 	char	*str;
 
-	if (!key || !value)
+	if (!key)
 		return (NULL);
 	key_len = strlen(key);
-	val_len = strlen(value);
+	val_len = 0;
+	if (value)
+		val_len = strlen(value);
 	str = safe_alloc(key_len + val_len + 2, sizeof(char), "join_key_value");
 	if (!str)
 		return (NULL);
 	ft_memcpy(str, key, key_len);
 	str[key_len] = '=';
-	ft_memcpy(str + key_len + 1, value, val_len);
+	if (value)
+		ft_memcpy(str + key_len + 1, value, val_len);
 	str[key_len + 1 + val_len] = '\0';
 	return (str);
 }
