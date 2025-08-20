@@ -14,6 +14,7 @@ This Bash-like shell allows you to:
 - Locate and execute the correct binary, based on the `PATH` variable or relative/absolute paths.
 - Support custom built-in commands.
 
+---
 
 Here are just a few of the commands tested without memory leaks, still‑reachable allocations, dangling pointers, or unclosed file descriptors when performing redirections.
 
