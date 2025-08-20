@@ -18,7 +18,7 @@ This Bash-like shell allows you to:
 
 Here are just a few of the commands tested without memory leaks, still‑reachable allocations, dangling pointers, or unclosed file descriptors when performing redirections.
 
-```shell
+```bash
 🔹minishell❯ mkdir test
 🔹minishell❯ export test_path=/home/kali/Desktop/test
 🔹minishell❯ export | grep test_path
