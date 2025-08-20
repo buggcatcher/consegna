@@ -1,5 +1,6 @@
 # minishell
 
+![MiniShell Demo](https://raw.githubusercontent.com/buggcatcher/public/main/various/minishow.gif)
 
 This Bash-like shell allows you to:
 
