@@ -59,7 +59,6 @@ Here are just a few of the commands tested without memory leaks, still‑reachab
 🔹minishell❯ cat | cat | cat
 🔹minishell❯ wc < nofile
 🔹minishell❯ foo
-🔹minishell❯ echo << x | foo 
 🔹minishell❯ ls | foo 
 🔹minishell❯ ls | foo << x 
 🔹minishell❯ foo cat < x.file 
@@ -71,6 +70,7 @@ Here are just a few of the commands tested without memory leaks, still‑reachab
 🔹minishell❯ echo << x >> file.file
 🔹minishell❯ cat << x > file.file
 🔹minishell❯ cat << x >> “file.txt “
+🔹minishell❯ echo << x | foo 
 🔹minishell❯ cat << EOF
   > user $USER
   > is using $0
