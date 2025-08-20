@@ -1,5 +1,21 @@
 # minishell
 
+
+This Bash-like shell allows you to:
+
+- Display a prompt whenever it is waiting for user input.
+- Use command history with arrow keys and autocomplete with the Tab key.
+- Correctly handle single and double quotes.
+- Handle redirections (input/output).
+- Handle pipes so that the output of one command is passed as input to the next.
+- Support environment variable expansion, including cases like `$?`, `$$`, and `$0`.
+- Handle signals in interactive mode.
+- Locate and execute the correct binary, based on the `PATH` variable or relative/absolute paths.
+- Support custom built-in commands.
+
+
+Here are just a few of the commands tested without memory leaks, still‑reachable allocations, dangling pointers, or unclosed file descriptors when performing redirections.
+
 ```shell
 🔹minishell❯ mkdir test
 🔹minishell❯ export test_path=/home/kali/Desktop/test
