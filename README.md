@@ -43,7 +43,7 @@ Here are just a few of the commands tested without memory leaks, still‑reachab
 🔹minishell❯ echo ciao | cat -e
 🔹minishell❯ ls -lha
 🔹minishell❯ touch doc1.txt doc2.txt doc3.txt
-🔹minishell❯ echo << x >> file.file
+🔹minishell❯ echo << 'x' >> file.file
 🔹minishell❯ cat << x > file.file
 🔹minishell❯ cat << x >> “file.txt “
 🔹minishell❯ ls | grep "file.txt  "
