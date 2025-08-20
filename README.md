@@ -57,6 +57,20 @@ Here are just a few of the commands tested without memory leaks, still‑reachab
 🔹minishell❯ export | grep key
 🔹minishell❯ unset _key1 _key2 _key3 _key4 _key5
 🔹minishell❯ cat | cat | cat
+🔹minishell❯ wc < nofile
+🔹minishell❯ foo
+🔹minishell❯ echo << x | foo 
+🔹minishell❯ ls | foo 
+🔹minishell❯ ls | foo << x 
+🔹minishell❯ foo cat < x.file 
+🔹minishell❯ foo | foo | foo 
+🔹minishell❯ echo "last exit status is $?. last pid is $$”
+🔹minishell❯ htop
+🔹minishell❯ nautilus .
+🔹minishell❯ cat << x | cat << x
+🔹minishell❯ echo << x >> file.file
+🔹minishell❯ cat << x > file.file
+🔹minishell❯ cat << x >> “file.txt “
 🔹minishell❯ cat << EOF
   > user $USER
   > is using $0
@@ -68,20 +82,6 @@ Here are just a few of the commands tested without memory leaks, still‑reachab
   > y
   > wp
   > z
-🔹minishell❯ wc < nofile
-🔹minishell❯ foo
-🔹minishell❯ echo << x | foo 
-🔹minishell❯ ls | foo 
-🔹minishell❯ ls | foo << x 
-🔹minishell❯ foo cat < x.file 
-🔹minishell❯ foo | foo | foo 
-🔹minishell❯ echo "last exit status is $?. last pid is $$”
-🔹minishell❯ cat << x | cat << x
-🔹minishell❯ echo << x >> file.file
-🔹minishell❯ cat << x > file.file
-🔹minishell❯ cat << x >> “file.txt “
-🔹minishell❯ htop
-🔹minishell❯ nautilus .
 🔹minishell❯ exit
 🔹minishell❯ exit 255
 ```
