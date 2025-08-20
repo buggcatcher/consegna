@@ -43,9 +43,6 @@ Here are just a few of the commands tested without memory leaks, still‑reachab
 🔹minishell❯ echo ciao | cat -e
 🔹minishell❯ ls -lha
 🔹minishell❯ touch doc1.txt doc2.txt doc3.txt
-🔹minishell❯ echo << 'x' >> file.file
-🔹minishell❯ cat << x > file.file
-🔹minishell❯ cat << x >> “file.txt “
 🔹minishell❯ ls | grep "file.txt  "
 🔹minishell❯ cat “file.txt “
 🔹minishell❯ ls -1 | grep ".txt" | sort > lista_documenti_ordinati.txt
@@ -59,7 +56,6 @@ Here are just a few of the commands tested without memory leaks, still‑reachab
 🔹minishell❯ env | grep key
 🔹minishell❯ export | grep key
 🔹minishell❯ unset _key1 _key2 _key3 _key4 _key5
-🔹minishell❯ cat << x | cat << x 
 🔹minishell❯ cat | cat | cat
 🔹minishell❯ cat << EOF
   > user $USER
@@ -80,6 +76,10 @@ Here are just a few of the commands tested without memory leaks, still‑reachab
 🔹minishell❯ foo cat < x.file 
 🔹minishell❯ foo | foo | foo 
 🔹minishell❯ echo "last exit status is $?. last pid is $$”
+🔹minishell❯ cat << x | cat << x
+🔹minishell❯ echo << x >> file.file
+🔹minishell❯ cat << x > file.file
+🔹minishell❯ cat << x >> “file.txt “
 🔹minishell❯ htop
 🔹minishell❯ nautilus .
 🔹minishell❯ exit
