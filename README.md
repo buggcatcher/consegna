@@ -86,99 +86,93 @@ Here are just a few of the commands tested without memory leaks, still‑reachab
 🔹minishell❯ exit 255
 ```
 
-Project Goal
+## Project Goal
 
-Create a simplified version of the Bash shell, called minishell, that can interpret user commands, execute programs, and handle basic shell features like redirections and pipes.
-Core Technical Requirements (Mandatory Part)
+Create a simplified version of the Bash shell, called `minishell`, that can interpret user commands, execute programs, and handle basic shell features like redirections and pipes.
 
-Your shell must:
+## Requirements
 
-    Display a prompt (e.g., $> ) when waiting for a command.
+Your shell must implement the following features:
 
-    Maintain a working command history (using the readline library).
+### Basic Functionality
+- Display a prompt (e.g., `$> `) when waiting for a command
+- Maintain a working command history using the `readline` library
+- Search for and launch executables using the `PATH` variable or via relative/absolute paths
 
-    Search for and launch executables using the PATH variable or via a relative/absolute path.
+### Quoting Handling
+- **Single quotes (`'`)**: Prevent interpretation of all meta-characters inside
+- **Double quotes (`"`)**: Prevent interpretation of most meta-characters, except for `$` (dollar sign) for variable expansion
 
-    Handle quoting:
+### Redirections
+- `<` Redirect input
+- `>` Redirect output (overwrite)
+- `<<` Here document (read input until a delimiter line)
+- `>>` Redirect output (append)
 
-        Single quotes ('): Prevent interpretation of all meta-characters inside.
+### Pipes
+- Implement pipes (`|`) to connect the output of one command to the input of the next
 
-        Double quotes ("): Prevent interpretation of most meta-characters, except for the $ (dollar sign) for variable expansion.
+### Variable Expansion
+- `$VAR` expands to its environment value
+- `$?` expands to the exit status of the last foreground command
 
-    Implement redirections:
+### Signal Handling
+- `ctrl-C` (SIGINT): Displays a new prompt on a new line
+- `ctrl-D` (EOF): Exits the shell
+- `ctrl-\` (SIGQUIT): Does nothing
 
-        < Redirect input.
+### Built-in Commands
+- `echo` with the `-n` option
+- `cd` with relative or absolute path
+- `pwd` with no options
+- `export` with no options
+- `unset` with no options
+- `env` with no options or arguments
+- `exit` with no options
 
-        > Redirect output (overwrite).
+## ⚙️ Technical Constraints
 
-        << Here document (read input until a delimiter line).
+### Code Requirements
+- Written in **C**
+- Must comply with the Norminette code style
+- No crashes allowed (segfaults, bus errors, etc.)
+- No memory leaks (except known `readline()` library leaks)
+- Only **one global variable** allowed, exclusively for storing signal numbers
 
-        >> Redirect output (append).
+### Makefile Requirements
+- Must contain rules: `$(NAME)`, `all`, `clean`, `fclean`, and `re`
+- Must compile with flags: `-Wall`, `-Wextra`, and `-Werror`
+- Must properly handle library dependencies (`libft` is authorized)
 
-    Implement pipes (|) to connect the output of one command to the input of the next.
+### External Functions
+The project allows use of various system calls and library functions including:
+- `readline`, `add_history` for input handling
+- `fork`, `execve`, `waitpid` for process management
+- `open`, `close`, `dup`, `dup2` for file descriptor manipulation
+- `pipe` for inter-process communication
+- `signal`, `sigaction` for signal handling
 
-    Expand environment variables:
+## ❌ Not Required (Mandatory Part)
+- Interpreting backslashes (`\`) or semicolons (`;`)
+- Handling unclosed quotes
+- Fixing memory leaks from the `readline()` library function
 
-        $VAR expands to its value.
+## 🏆 Bonus Part
 
-        $? expands to the exit status of the last foreground command.
+### Bonus Features
+- **Logical operators**: `&&` (and) and `||` (or)
+- **Parentheses** `()` for setting operation priority
+- **Wildcards**: The `*` wildcard should work for the current working directory
 
-    Handle signals like Bash in interactive mode:
+## 🧠 Key Learning Outcomes
 
-        ctrl-C (SIGINT): Displays a new prompt on a new line.
+This project focuses on understanding:
+- Process creation (`fork`, `execve`)
+- File descriptor manipulation (`dup2`, `pipe`)
+- Signal handling in an interactive program
+- Environment variable management
+- Parsing and interpreting user input
 
-        ctrl-D (EOF): Exits the shell.
+## 📝 Reference Implementation
 
-        ctrl-\ (SIGQUIT): Does nothing.
-
-    Implement built-in commands:
-
-        echo with the -n option
-
-        cd
-
-        pwd
-
-        export
-
-        unset
-
-        env
-
-        exit
-
-Important Rules & Constraints
-
-    Language: Must be written in C.
-
-    Norminette: Code must comply with the school's Norm.
-
-    Errors: No crashes (segfaults, bus errors, etc.) are allowed.
-
-    Memory: No memory leaks are allowed (except for the known readline() leaks).
-
-    Global Variables: Only one global variable is allowed, and it can only be used to store a received signal number (e.g., g_signal). It cannot be a structure.
-
-    Makefile: Required with the rules $(NAME), all, clean, fclean, and re. It must compile with -Wall, -Wextra, and -Werror.
-
-    Libraries: You are authorized to use your libft. The use of the readline and related termcap functions is mandatory and provided.
-
-What is NOT Required (Mandatory Part)
-
-    Interpreting backslashes (\) or semicolons (;).
-
-    Handling unclosed quotes.
-
-    Fixing memory leaks from the readline() library function.
-
-Bonus Part
-
-The bonus will only be evaluated if the mandatory part is 100% perfect.
-
-    Logical operators: && (and) and || (or), with parentheses () for setting priority.
-
-    Wildcards: The * wildcard should work for the current working directory.
-
-Key Takeaway
-
-This project is about deeply understanding process creation (fork, execve), file descriptor manipulation (dup2, pipe), and signal handling. The reference for any ambiguous behavior is the Bash shell.
+For any ambiguous behavior, **Bash** should be used as the reference implementation.
