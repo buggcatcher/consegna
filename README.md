@@ -152,7 +152,7 @@ The project allows use of various system calls and library functions including:
 - `pipe` for inter-process communication
 - `signal`, `sigaction` for signal handling
 
-## ❌ Not Required (Mandatory Part)
+## ❌ Not Required
 - Interpreting backslashes (`\`) or semicolons (`;`)
 - Handling unclosed quotes
 - Fixing memory leaks from the `readline()` library function
