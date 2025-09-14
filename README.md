@@ -140,9 +140,9 @@ Your shell must implement the following features:
 - Only **one global variable** allowed, exclusively for storing signal numbers
 
 ### Makefile Requirements
-- Must contain rules: `$(NAME)`, `all`, `clean`, `fclean`, and `re`
+- Must contain rules: `$(NAME)`, `all`, `clean` and `re`
 - Must compile with flags: `-Wall`, `-Wextra`, and `-Werror`
-- Must properly handle library dependencies (`libft` is authorized)
+- Must handle own library dependencies
 
 ### External Functions
 The project allows use of various system calls and library functions including:
