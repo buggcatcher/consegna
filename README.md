@@ -85,3 +85,100 @@ Here are just a few of the commands tested without memory leaks, still‑reachab
 🔹minishell❯ exit
 🔹minishell❯ exit 255
 ```
+
+Project Goal
+
+Create a simplified version of the Bash shell, called minishell, that can interpret user commands, execute programs, and handle basic shell features like redirections and pipes.
+Core Technical Requirements (Mandatory Part)
+
+Your shell must:
+
+    Display a prompt (e.g., $> ) when waiting for a command.
+
+    Maintain a working command history (using the readline library).
+
+    Search for and launch executables using the PATH variable or via a relative/absolute path.
+
+    Handle quoting:
+
+        Single quotes ('): Prevent interpretation of all meta-characters inside.
+
+        Double quotes ("): Prevent interpretation of most meta-characters, except for the $ (dollar sign) for variable expansion.
+
+    Implement redirections:
+
+        < Redirect input.
+
+        > Redirect output (overwrite).
+
+        << Here document (read input until a delimiter line).
+
+        >> Redirect output (append).
+
+    Implement pipes (|) to connect the output of one command to the input of the next.
+
+    Expand environment variables:
+
+        $VAR expands to its value.
+
+        $? expands to the exit status of the last foreground command.
+
+    Handle signals like Bash in interactive mode:
+
+        ctrl-C (SIGINT): Displays a new prompt on a new line.
+
+        ctrl-D (EOF): Exits the shell.
+
+        ctrl-\ (SIGQUIT): Does nothing.
+
+    Implement built-in commands:
+
+        echo with the -n option
+
+        cd
+
+        pwd
+
+        export
+
+        unset
+
+        env
+
+        exit
+
+Important Rules & Constraints
+
+    Language: Must be written in C.
+
+    Norminette: Code must comply with the school's Norm.
+
+    Errors: No crashes (segfaults, bus errors, etc.) are allowed.
+
+    Memory: No memory leaks are allowed (except for the known readline() leaks).
+
+    Global Variables: Only one global variable is allowed, and it can only be used to store a received signal number (e.g., g_signal). It cannot be a structure.
+
+    Makefile: Required with the rules $(NAME), all, clean, fclean, and re. It must compile with -Wall, -Wextra, and -Werror.
+
+    Libraries: You are authorized to use your libft. The use of the readline and related termcap functions is mandatory and provided.
+
+What is NOT Required (Mandatory Part)
+
+    Interpreting backslashes (\) or semicolons (;).
+
+    Handling unclosed quotes.
+
+    Fixing memory leaks from the readline() library function.
+
+Bonus Part
+
+The bonus will only be evaluated if the mandatory part is 100% perfect.
+
+    Logical operators: && (and) and || (or), with parentheses () for setting priority.
+
+    Wildcards: The * wildcard should work for the current working directory.
+
+Key Takeaway
+
+This project is about deeply understanding process creation (fork, execve), file descriptor manipulation (dup2, pipe), and signal handling. The reference for any ambiguous behavior is the Bash shell.
